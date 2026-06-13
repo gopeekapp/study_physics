@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Cyclotron Simulation</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #111; color: white; font-family: sans-serif; }
+        #info { position: absolute; top: 15px; left: 15px; z-index: 100; pointer-events: none; max-width: 400px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 8px;}
+        h2 { margin-top: 0; color: #ffeb3b; }
+        .legend { margin-top: 10px; font-size: 14px; line-height: 1.5; }
+        .legend span { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border-radius: 2px;}
+    </style>
+    <!-- Load Three.js 3D Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="info">
+        <h2>3D Cyclotron Simulator</h2>
+        <p><strong>Controls:</strong> Click & Drag to Rotate | Scroll to Zoom</p>
+        <div class="legend">
+            <div><span style="background: red;"></span><span style="background: blue;"></span> <strong>The "Dees" (Electrodes)</strong><br>Colors swap to show the alternating Electric Field accelerating the particle.</div>
+            <div style="margin-top: 8px;"><span style="background: #00ff00;"></span> <strong>Magnetic Field (B)</strong><br>Green arrows. Bends the particle into a circular path.</div>
+            <div style="margin-top: 8px;"><span style="background: #ffff00;"></span> <strong>Proton / Particle Path</strong><br>Spirals outward as it gains speed!</div>
+        </div>
+    </div>
+
+    <script>
+        // 1. SCENE SETUP
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, -35, 30);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(0, 0, 50);
+        scene.add(dirLight);
+
+        // 2. CREATE THE "DEES" (Hollow D-Shaped Electrodes)
+        const radius = 15;
+        const height = 4;
+        const gap = 1.5;
+
+        const deeMat1 = new THREE.MeshPhongMaterial({ color: 0xff4444, transparent: true, opacity: 0.35, side: THREE.DoubleSide });
+        const deeMat2 = new THREE.MeshPhongMaterial({ color: 0x4444ff, transparent: true, opacity: 0.35, side: THREE.DoubleSide });
+        const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+
+        // Dee 1 (Right)
+        const dee1Geo = new THREE.CylinderGeometry(radius, radius, height, 32, 1, false, -Math.PI/2, Math.PI);
+        const dee1 = new THREE.Mesh(dee1Geo, deeMat1);
+        dee1.rotation.x = Math.PI / 2;
+        dee1.position.x = gap / 2;
+        dee1.add(new THREE.LineSegments(new THREE.EdgesGeometry(dee1Geo), edgeMat));
+        scene.add(dee1);
+
+        // Dee 2 (Left)
+        const dee2Geo = new THREE.CylinderGeometry(radius, radius, height, 32, 1, false, Math.PI/2, Math.PI);
+        const dee2 = new THREE.Mesh(dee2Geo, deeMat2);
+        dee2.rotation.x = Math.PI / 2;
+        dee2.position.x = -gap / 2;
+        dee2.add(new THREE.LineSegments(new THREE.EdgesGeometry(dee2Geo), edgeMat));
+        scene.add(dee2);
+
+        // 3. MAGNETIC FIELD INDICATORS (Green Arrows)
+        const arrowDir = new THREE.Vector3(0, 0, -1);
+        for(let i = -12; i <= 12; i+=12) {
+            for(let j = -12; j <= 12; j+=12) {
+                if(i === 0 && j === 0) continue;
+                scene.add(new THREE.ArrowHelper(arrowDir, new THREE.Vector3(i, j, 8), 10, 0x00ff00, 2, 1.5));
+            }
+        }
+
+        // 4. THE PARTICLE & TRAIL
+        const particle = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffff00 }));
+        scene.add(particle);
+
+        const MAX_POINTS = 2000;
+        const trailGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(MAX_POINTS * 3);
+        trailGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        trailGeo.setDrawRange(0, 0);
+        const trail = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({ color: 0xffff00, linewidth: 2 }));
+        scene.add(trail);
+
+        // 5. PHYSICS ANIMATION LOOP
+        let angle = 0;
+        let currentRadius = 0.5;
+        const angularVelocity = 0.06;
+        const maxRadius = radius - 1;
+        let pointCount = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (currentRadius < maxRadius) {
+                angle += angularVelocity;
+                // In a real cyclotron, radius jumps at the gap. Here we simulate continuous spiral growth.
+                currentRadius += 0.02; 
+
+                const x = currentRadius * Math.cos(angle);
+                const y = currentRadius * Math.sin(angle);
+                particle.position.set(x, y, 0);
+
+                // Draw Trail
+                if(pointCount < MAX_POINTS) {
+                    positions[pointCount*3] = x;
+                    positions[pointCount*3+1] = y;
+                    positions[pointCount*3+2] = 0;
+                    pointCount++;
+                    trailGeo.setDrawRange(0, pointCount);
+                    trailGeo.attributes.position.needsUpdate = true;
+                }
+
+                // Simulate Alternating Voltage (Swap colors when particle goes deep into a Dee)
+                if (Math.sin(angle) > 0) {
+                    dee1.material.color.setHex(0xff4444); dee2.material.color.setHex(0x4444ff);
+                } else {
+                    dee1.material.color.setHex(0x4444ff); dee2.material.color.setHex(0xff4444);
+                }
+            } else {
+                // Reset Simulation
+                angle = 0; currentRadius = 0.5; pointCount = 0; trailGeo.setDrawRange(0, 0);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Responsive Window
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
