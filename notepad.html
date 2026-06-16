@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --bg-elevated: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-muted: #a3a3a3;
+            --border: #e8e6e1;
+            --border-hover: #d4d0c8;
+            --accent: #2d2d2d;
+            --accent-soft: rgba(45,45,45,0.06);
+            --accent2: #4a7c59;
+            --danger: #c45c5c;
+            --danger-soft: rgba(196,92,92,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+            --transition: all 0.25s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 36px; height: 36px;
+            background: var(--accent);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 14px 9px 36px;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 220px;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .search-box::before {
+            content: '';
+            position: absolute;
+            left: 12px; top: 50%;
+            transform: translateY(-50%);
+            width: 14px; height: 14px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") no-repeat center;
+            opacity: 0.6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1a1a1a;
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--accent-soft);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .btn-danger {
+            background: var(--danger-soft);
+            color: var(--danger);
+            border: 1px solid rgba(196,92,92,0.15);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* ─── Stats ─── */
+        .stats-bar {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            background: var(--accent-soft);
+        }
+
+        .stat-info h4 {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-info span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ─── Groups Grid ─── */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+
+        .group-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .group-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
+        }
+
+        .group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .group-header:hover { background: rgba(0,0,0,0.01); }
+
+        .group-title-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .group-color {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .group-title-section h3 {
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .group-count {
+            background: var(--bg);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .group-actions-header {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .group-card:hover .group-actions-header { opacity: 1; }
+
+        .icon-btn {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-soft);
+            color: var(--text-primary);
+        }
+
+        .icon-btn.delete:hover {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .chevron {
+            font-size: 11px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            margin-left: 4px;
+        }
+
+        .chevron.rotated { transform: rotate(-90deg); }
+
+        /* ─── Group Body ─── */
+        .group-body {
+            padding: 14px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .group-body.collapsed { display: none; }
+
+        /* ─── Note Card ─── */
+        .note-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .note-card:hover {
+            border-color: var(--border-hover);
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .note-card:last-child { margin-bottom: 0; }
+
+        .note-content {
+            font-size: 14px;
+            line-height: 1.7;
+            word-break: break-word;
+            white-space: pre-wrap;
+            color: var(--text-primary);
+        }
+
+        .note-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+        }
+
+        .note-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 2px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .note-card:hover .note-actions { opacity: 1; }
+
+        .note-actions .icon-btn {
+            width: 24px; height: 24px;
+            font-size: 12px;
+        }
+
+        /* ─── Add Note ─── */
+        .add-note-area {
+            padding: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .add-note-input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: var(--transition);
+            min-height: 40px;
+            max-height: 160px;
+        }
+
+        .add-note-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+            background: #fff;
+        }
+
+        .add-note-input::placeholder { color: var(--text-muted); }
+
+        .add-note-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        /* ─── Empty State ─── */
+        .empty-state {
+            text-align: center;
+            padding: 36px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .emoji {
+            font-size: 36px;
+            margin-bottom: 10px;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+        }
+
+        /* ─── Modal ─── */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 420px;
+            padding: 24px;
+            transform: scale(0.96) translateY(8px);
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* ─── Toast ─── */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            animation: toastIn 0.35s ease;
+            max-width: 300px;
+        }
+
+        .toast.success { border-left: 2px solid var(--accent2); }
+        .toast.error { border-left: 2px solid var(--danger); }
+        .toast.info { border-left: 2px solid var(--accent); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(12px); }
+        }
+
+        /* ════════════════════════════════════════
+           SLIDESHOW / FULL VIEW MODE
+           ════════════════════════════════════════ */
+
+        .slideshow-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            animation: slideIn 0.4s ease;
+        }
+
+        .slideshow-overlay.active { display: flex; }
+
+        @keyframes slideIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Slideshow Header */
+        .slideshow-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .slideshow-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slideshow-title .group-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .slideshow-title h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .slideshow-title span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .slideshow-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slideshow-nav {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .slideshow-nav:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .slideshow-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slideshow-nav:disabled:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .slideshow-close {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: var(--transition);
+            margin-left: 8px;
+        }
+
+        .slideshow-close:hover {
+            background: var(--danger-soft);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Slideshow Body */
+        .slideshow-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slideshow-slide {
+            max-width: 800px;
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 48px 56px;
+            box-shadow: var(--shadow-lg);
+            animation: slideCardIn 0.35s ease;
+            position: relative;
+        }
+
+        @keyframes slideCardIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .slideshow-slide .slide-number {
+            position: absolute;
+            top: 20px; right: 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .slideshow-slide .slide-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .slideshow-slide .slide-meta {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slideshow-slide .slide-date {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .slideshow-slide .slide-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .slideshow-slide .slide-actions button {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .slideshow-slide .slide-actions button:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .slideshow-slide .slide-actions button.delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Progress bar */
+        .slideshow-progress {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 3px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        /* Keyboard hint */
+        .slideshow-hint {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .slideshow-hint kbd {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        /* Side click zones for navigation */
+        .click-zone {
+            position: absolute;
+            top: 0;
+            width: 15%;
+            height: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .click-zone:hover { opacity: 1; }
+        .click-zone.left { left: 0; }
+        .click-zone.right { right: 0; }
+
+        .click-zone .zone-arrow {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app { padding: 20px 16px; }
+            .groups-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .search-box input { width: 100%; }
+            .stats-bar { flex-wrap: wrap; gap: 20px; }
+            .slideshow-slide { padding: 28px 24px; }
+            .slideshow-slide .slide-content { font-size: 16px; }
+            .slideshow-header { padding: 16px 20px; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="brand">
+                <div class="brand-icon">📝</div>
+                <div class="brand-text">
+                    <h1>Notes</h1>
+                    <p>Organize your thoughts</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search notes...">
+                </div>
+                <button class="btn btn-primary" onclick="openNewGroupModal()">
+                    <span>+</span> New Group
+                </button>
+                <button class="btn btn-ghost" onclick="exportData()">Export</button>
+                <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">Import</button>
+                <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-icon">📁</div>
+                <div class="stat-info">
+                    <h4>Groups</h4>
+                    <span id="stat-groups">0</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <h4>Notes</h4>
+                    <span id="stat-notes">0</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-info">
+                    <h4>Last Active</h4>
+                    <span id="stat-last" style="font-size:13px;font-weight:500;">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Groups Grid -->
+        <div class="groups-grid" id="groups-grid"></div>
+    </div>
+
+    <!-- New Group Modal -->
+    <div class="modal-overlay" id="new-group-modal">
+        <div class="modal">
+            <h2>Create New Group</h2>
+            <p>Start a new collection for your notes.</p>
+            <div class="form-group">
+                <label>Group Name</label>
+                <input type="text" id="new-group-name" placeholder="e.g. Maths Chapter 1" autofocus>
+            </div>
+            <div class="form-group">
+                <label>Pick a Color</label>
+                <div class="color-picker" id="new-group-colors">
+                    <div class="color-option selected" style="background:#2d2d2d" data-color="#2d2d2d"></div>
+                    <div class="color-option" style="background:#4a7c59" data-color="#4a7c59"></div>
+                    <div class="color-option" style="background:#5b8db8" data-color="#5b8db8"></div>
+                    <div class="color-option" style="background:#b85b5b" data-color="#b85b5b"></div>
+                    <div class="color-option" style="background:#b88a5b" data-color="#b88a5b"></div>
+                    <div class="color-option" style="background:#7c5b9e" data-color="#7c5b9e"></div>
+                    <div class="color-option" style="background:#5b9e8a" data-color="#5b9e8a"></div>
+                    <div class="color-option" style="background:#9e5b7c" data-color="#9e5b7c"></div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeModal('new-group-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="createGroup()">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Note Modal -->
+    <div class="modal-overlay" id="edit-note-modal">
+        <div class="modal" style="max-width:520px;">
+            <h2>Edit Note</h2>
+            <p>Update your note content.</p>
+            <div class="form-group">
+                <label>Note Content</label>
+                <textarea id="edit-note-content" placeholder="Write your note here..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeModal('edit-note-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEditedNote()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SLIDESHOW OVERLAY
+         ════════════════════════════════════════ -->
+    <div class="slideshow-overlay" id="slideshow-overlay">
+        <div class="slideshow-header">
+            <div class="slideshow-title">
+                <div class="group-dot" id="ss-dot"></div>
+                <h2 id="ss-group-name">Group Name</h2>
+                <span id="ss-counter">1 / 5</span>
+            </div>
+            <div class="slideshow-controls">
+                <button class="slideshow-nav" id="ss-prev" onclick="slideshowPrev()">◀</button>
+                <button class="slideshow-nav" id="ss-next" onclick="slideshowNext()">▶</button>
+                <button class="slideshow-close" onclick="closeSlideshow()">✕</button>
+            </div>
+        </div>
+        <div class="slideshow-body" id="ss-body">
+            <div class="click-zone left" onclick="slideshowPrev()">
+                <div class="zone-arrow">◀</div>
+            </div>
+            <div class="slideshow-slide" id="ss-slide">
+                <span class="slide-number" id="ss-number">1 / 5</span>
+                <div class="slide-content" id="ss-content">Note content goes here...</div>
+                <div class="slide-meta">
+                    <span class="slide-date" id="ss-date">Jun 16, 2026</span>
+                    <div class="slide-actions">
+                        <button onclick="slideshowEdit()">Edit</button>
+                        <button class="delete" onclick="slideshowDelete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+            <div class="click-zone right" onclick="slideshowNext()">
+                <div class="zone-arrow">▶</div>
+            </div>
+            <div class="slideshow-progress" id="ss-progress"></div>
+            <div class="slideshow-hint">
+                <span><kbd>←</kbd> Prev</span>
+                <span><kbd>→</kbd> Next</span>
+                <span><kbd>Esc</kbd> Close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // ─── State ───
+        let groups = JSON.parse(localStorage.getItem('notes_groups_v2') || '[]');
+        let editingNoteId = null;
+        let editingGroupId = null;
+        let searchQuery = '';
+
+        // Slideshow state
+        let ssGroupId = null;
+        let ssIndex = 0;
+
+        // ─── Persistence ───
+        function save() {
+            localStorage.setItem('notes_groups_v2', JSON.stringify(groups));
+            render();
+        }
+
+        function uid() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        function timeAgo(ts) {
+            const diff = Date.now() - ts;
+            const sec = Math.floor(diff / 1000);
+            if (sec < 60) return 'just now';
+            const min = Math.floor(sec / 60);
+            if (min < 60) return min + 'm ago';
+            const hr = Math.floor(min / 60);
+            if (hr < 24) return hr + 'h ago';
+            const day = Math.floor(hr / 24);
+            if (day < 7) return day + 'd ago';
+            return new Date(ts).toLocaleDateString();
+        }
+
+        function formatDate(ts) {
+            return new Date(ts).toLocaleDateString('en-US', {
+                month: 'short', day: 'numeric', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // ─── Toast ───
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { success: '✓', error: '✕', info: '•' };
+            el.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+            container.appendChild(el);
+            setTimeout(() => {
+                el.style.animation = 'toastOut 0.25s ease forwards';
+                setTimeout(() => el.remove(), 250);
+            }, 2500);
+        }
+
+        // ─── Modal ───
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            const input = document.querySelector(`#${id} input[autofocus]`);
+            if (input) setTimeout(() => input.focus(), 50);
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        function openNewGroupModal() {
+            document.getElementById('new-group-name').value = '';
+            openModal('new-group-modal');
+        }
+
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeModal(overlay.id);
+            });
+        });
+
+        document.getElementById('new-group-name').addEventListener('keydown', e => {
+            if (e.key === 'Enter') createGroup();
+        });
+
+        // ─── CRUD ───
+        function createGroup() {
+            const name = document.getElementById('new-group-name').value.trim();
+            if (!name) { toast('Please enter a group name', 'error'); return; }
+            const selected = document.querySelector('#new-group-colors .color-option.selected');
+            const color = selected ? selected.dataset.color : '#2d2d2d';
+            groups.push({ id: uid(), name, color, collapsed: false, notes: [], createdAt: Date.now() });
+            save();
+            closeModal('new-group-modal');
+            toast('Group created', 'success');
+        }
+
+        function deleteGroup(id) {
+            if (!confirm('Delete this group and all its notes?')) return;
+            groups = groups.filter(g => g.id !== id);
+            save();
+            toast('Group deleted', 'info');
+        }
+
+        function toggleGroup(id) {
+            const g = groups.find(x => x.id === id);
+            if (g) { g.collapsed = !g.collapsed; save(); }
+        }
+
+        function addNote(groupId) {
+            const textarea = document.getElementById(`note-input-${groupId}`);
+            const content = textarea.value.trim();
+            if (!content) { toast('Note cannot be empty', 'error'); return; }
+            const group = groups.find(g => g.id === groupId);
+            group.notes.unshift({ id: uid(), content, createdAt: Date.now() });
+            textarea.value = '';
+            save();
+            toast('Note saved', 'success');
+        }
+
+        function handleNoteKeydown(e, groupId) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addNote(groupId);
+            }
+        }
+
+        function deleteNote(groupId, noteId) {
+            const group = groups.find(g => g.id === groupId);
+            group.notes = group.notes.filter(n => n.id !== noteId);
+            save();
+            toast('Note deleted', 'info');
+        }
+
+        function editNote(groupId, noteId) {
+            const group = groups.find(g => g.id === groupId);
+            const note = group.notes.find(n => n.id === noteId);
+            editingNoteId = noteId;
+            editingGroupId = groupId;
+            document.getElementById('edit-note-content').value = note.content;
+            openModal('edit-note-modal');
+        }
+
+        function saveEditedNote() {
+            const content = document.getElementById('edit-note-content').value.trim();
+            if (!content) { toast('Note cannot be empty', 'error'); return; }
+            const group = groups.find(g => g.id === editingGroupId);
+            const note = group.notes.find(n => n.id === editingNoteId);
+            note.content = content;
+            note.editedAt = Date.now();
+            editingNoteId = null;
+            editingGroupId = null;
+            save();
+            closeModal('edit-note-modal');
+            toast('Note updated', 'success');
+        }
+
+        // ─── Search ───
+        document.getElementById('search-input').addEventListener('input', e => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            render();
+        });
+
+        // ─── Export / Import ───
+        function exportData() {
+            const blob = new Blob([JSON.stringify(groups, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `notes-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            toast('Data exported', 'success');
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        groups = data;
+                        save();
+                        toast('Data imported', 'success');
+                    } else {
+                        toast('Invalid file format', 'error');
+                    }
+                } catch {
+                    toast('Invalid JSON file', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        // ════════════════════════════════════════
+        // SLIDESHOW FUNCTIONS
+        // ════════════════════════════════════════
+
+        function openSlideshow(groupId, startIndex = 0) {
+            const group = groups.find(g => g.id === groupId);
+            if (!group || group.notes.length === 0) {
+                toast('No notes to display', 'info');
+                return;
+            }
+            ssGroupId = groupId;
+            ssIndex = startIndex;
+            renderSlideshow();
+            document.getElementById('slideshow-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSlideshow() {
+            document.getElementById('slideshow-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            ssGroupId = null;
+            ssIndex = 0;
+        }
+
+        function renderSlideshow() {
+            const group = groups.find(g => g.id === ssGroupId);
+            if (!group) return;
+            const notes = group.notes;
+            const note = notes[ssIndex];
+            const total = notes.length;
+
+            document.getElementById('ss-dot').style.background = group.color;
+            document.getElementById('ss-group-name').textContent = group.name;
+            document.getElementById('ss-counter').textContent = `${ssIndex + 1} / ${total}`;
+            document.getElementById('ss-number').textContent = `${ssIndex + 1} / ${total}`;
+            document.getElementById('ss-content').innerHTML = formatContent(escapeHtml(note.content));
+            document.getElementById('ss-date').textContent = formatDate(note.createdAt) + (note.editedAt ? ' · edited' : '');
+
+            document.getElementById('ss-prev').disabled = ssIndex === 0;
+            document.getElementById('ss-next').disabled = ssIndex === total - 1;
+
+            const progress = total > 1 ? ((ssIndex + 1) / total) * 100 : 100;
+            document.getElementById('ss-progress').style.width = progress + '%';
+        }
+
+        function slideshowNext() {
+            const group = groups.find(g => g.id === ssGroupId);
+            if (!group || ssIndex >= group.notes.length - 1) return;
+            ssIndex++;
+            animateSlideTransition('next');
+        }
+
+        function slideshowPrev() {
+            if (ssIndex <= 0) return;
+            ssIndex--;
+            animateSlideTransition('prev');
+        }
+
+        function animateSlideTransition(direction) {
+            const slide = document.getElementById('ss-slide');
+            slide.style.animation = 'none';
+            slide.offsetHeight; // trigger reflow
+            slide.style.animation = 'slideCardIn 0.35s ease';
+            renderSlideshow();
+        }
+
+        function slideshowEdit() {
+            const group = groups.find(g => g.id === ssGroupId);
+            const note = group.notes[ssIndex];
+            closeSlideshow();
+            editNote(ssGroupId, note.id);
+        }
+
+        function slideshowDelete() {
+            const group = groups.find(g => g.id === ssGroupId);
+            const note = group.notes[ssIndex];
+            if (!confirm('Delete this note?')) return;
+            group.notes = group.notes.filter(n => n.id !== note.id);
+            if (ssIndex >= group.notes.length) ssIndex = Math.max(0, group.notes.length - 1);
+            save();
+            if (group.notes.length === 0) {
+                closeSlideshow();
+                toast('All notes deleted', 'info');
+            } else {
+                renderSlideshow();
+                toast('Note deleted', 'info');
+            }
+        }
+
+        // Keyboard navigation for slideshow
+        document.addEventListener('keydown', e => {
+            const overlay = document.getElementById('slideshow-overlay');
+            if (!overlay.classList.contains('active')) return;
+            if (e.key === 'ArrowRight') slideshowNext();
+            if (e.key === 'ArrowLeft') slideshowPrev();
+            if (e.key === 'Escape') closeSlideshow();
+        });
+
+        // ─── Render ───
+        function render() {
+            const grid = document.getElementById('groups-grid');
+            let filtered = groups;
+
+            if (searchQuery) {
+                filtered = groups.map(g => ({
+                    ...g,
+                    notes: g.notes.filter(n => n.content.toLowerCase().includes(searchQuery))
+                })).filter(g => g.notes.length > 0 || g.name.toLowerCase().includes(searchQuery));
+            }
+
+            if (filtered.length === 0 && groups.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <div class="emoji">📭</div>
+                        <h3>No groups yet</h3>
+                        <p>Create your first group to start taking notes.</p>
+                    </div>`;
+            } else if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <div class="emoji">🔍</div>
+                        <h3>No matches found</h3>
+                        <p>Try a different search term.</p>
+                    </div>`;
+            } else {
+                grid.innerHTML = filtered.map(group => {
+                    const noteCount = group.notes.length;
+                    const displayNotes = searchQuery ? group.notes : group.notes.slice(0, 50);
+
+                    return `
+                    <div class="group-card">
+                        <div class="group-header" onclick="toggleGroup('${group.id}')">
+                            <div class="group-title-section">
+                                <div class="group-color" style="background:${group.color}"></div>
+                                <h3>${escapeHtml(group.name)}</h3>
+                                <span class="group-count">${noteCount}</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:4px;">
+                                <div class="group-actions-header" onclick="event.stopPropagation()">
+                                    <button class="icon-btn" onclick="openSlideshow('${group.id}')" title="View as slideshow">▶</button>
+                                    <button class="icon-btn delete" onclick="deleteGroup('${group.id}')" title="Delete group">🗑</button>
+                                </div>
+                                <span class="chevron ${group.collapsed ? 'rotated' : ''}">▼</span>
+                            </div>
+                        </div>
+                        <div class="group-body ${group.collapsed ? 'collapsed' : ''}">
+                            ${displayNotes.length === 0 ? `
+                                <div class="empty-state">
+                                    <div class="emoji" style="font-size:28px;">✨</div>
+                                    <p style="font-size:12px;">No notes yet. Add one below.</p>
+                                </div>
+                            ` : displayNotes.map(note => `
+                                <div class="note-card" onclick="openSlideshow('${group.id}', ${group.notes.indexOf(note)})">
+                                    <div class="note-content">${formatContent(escapeHtml(note.content))}</div>
+                                    <div class="note-footer">
+                                        <span class="note-time">${timeAgo(note.createdAt)}${note.editedAt ? ' · edited' : ''}</span>
+                                        <div class="note-actions" onclick="event.stopPropagation()">
+                                            <button class="icon-btn" onclick="editNote('${group.id}', '${note.id}')" title="Edit">✎</button>
+                                            <button class="icon-btn delete" onclick="deleteNote('${group.id}', '${note.id}')" title="Delete">🗑</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="add-note-area">
+                            <textarea 
+                                class="add-note-input" 
+                                id="note-input-${group.id}"
+                                placeholder="Write a note... (Enter to save)"
+                                onkeydown="handleNoteKeydown(event, '${group.id}')"
+                                rows="2"
+                            ></textarea>
+                            <div class="add-note-actions">
+                                <button class="btn btn-sm btn-primary" onclick="addNote('${group.id}')">Save</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            const totalNotes = groups.reduce((sum, g) => sum + g.notes.length, 0);
+            document.getElementById('stat-groups').textContent = groups.length;
+            document.getElementById('stat-notes').textContent = totalNotes;
+            const allTs = groups.flatMap(g => g.notes.map(n => n.createdAt));
+            document.getElementById('stat-last').textContent = allTs.length > 0 ? timeAgo(Math.max(...allTs)) : '—';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatContent(text) {
+            return text.replace(
+                /(https?:\/\/[^\s]+)/g,
+                '<a href="$1" target="_blank" style="color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(74,124,89,0.2);">$1</a>'
+            );
+        }
+
+        render();
+    </script>
+</body>
+</html>
